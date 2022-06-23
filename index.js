@@ -1,60 +1,73 @@
 const fetch = require('node-fetch');
 const moment = require('moment');
 const chalk = require('chalk');
-const gradient = require('gradient-string') 
 const rs = require('readline-sync');
+const chalkRainbow = require('chalk-rainbow')
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 const GoStumble = (auth) => new Promise((resolve, reject) => {
 
-    fetch('http://kitkabackend.eastus.cloudapp.azure.com:5010/round/finishv2/3', {
-        method: 'GET',
-        headers: {
-            'authorization': auth
-        }
-    })
+  fetch('http://kitkabackend.eastus.cloudapp.azure.com:5010/round/finishv2/3', {
+    method: 'GET',
+    headers: {
+      'authorization': auth
+    }
+  })
     .then(res => res.text())
-    .then(data=> {
-        resolve(data);
+    .then(data => {
+      resolve(data);
     })
     .catch(err => {
-        reject(err);
+      reject(err);
     });
 
 });
 
 (async () => {
 
-    console.log(gradient('red', 'orange', 'yellow', 'green', 'blue', 'indigo', 'violet')(`
-                Duplicator Crown Only
-        By : Eskey#8004 - Credit : @dkmpostor
-    `));
+  console.log(chalkRainbow(`
 
-    const auth = rs.question(gradient('red', 'orange', 'yellow', 'green', 'blue', 'indigo', 'violet')('Masukin Code Auth : '));
-    console.log('');
+███████████████████████████
+█▄─▄████▀▄─██▄─▀█▄─▄██▀▄─██
+██─██▀██─▀─███─█▄▀─███─▀─██
+▀▄▄▄▄▄▀▄▄▀▄▄▀▄▄▄▀▀▄▄▀▄▄▀▄▄▀
+By : ${('LANA X ZEXYY')}
+`));
 
-    while (true) {
+  const auth = rs.question(chalkRainbow('Token : '));
+  console.log('');
 
-        const result = await GoStumble(auth);
-        if (!result) {
+  while (true) {
 
-            console.log(gradient('red', 'orange', 'yellow', 'green', 'blue', 'indigo', 'violet')(`\r[ ${moment().format('HH:mm:ss')} ] Code Auth sudah Expired!`));
-            break;
+    const result = await GoStumble(auth);
+    if (!result) {
 
-        } else if (result.includes('User')) {
+      console.log(chalkRainbow(`\r[ ${moment().format('HH:mm:ss')} ] Auth Eror !`));
 
-            const data = JSON.parse(result);
-            const username = data.User.Username;
-            const country = data.User.Country;
-            const trophy = data.User.SkillRating;
-            const crown = data.User.Crowns;
-            
-            console.log(gradient('red', 'orange', 'yellow', 'green', 'blue', 'indigo', 'violet')(`\r[ ${moment().format('HH:mm:ss')} ] Trophy : ${trophy} | Crown : ${crown}`));
-            
-        } else if (result == 'BANNED') {
-            console.log(gradient('red', 'orange', 'yellow', 'green', 'blue', 'indigo', 'violet')(`\r[ ${moment().format('HH:mm:ss')} ] 🌈Akun terkena Banned ! 🏳️‍🌈`));
-            break;
-        }
+    } else if (result.includes('User')) {
+
+      const data = JSON.parse(result);
+      const username = data.User.Username;
+      const country = data.User.Country;
+      const trophy = data.User.SkillRating;
+      const crown = data.User.Crowns;
+
+      console.log(chalkRainbow(`\r
+-  [${moment().format('HH:mm:ss')}]  -
+>  ${(`Negara By Lana : ${country}`)}
+>  ${(`Nama By Lana : ${username}`)}  
+>  ${(`Piala By Lana : ${trophy}`)}  
+>  ${(`Mahkota By Lana : ${crown}`)}
+>  ${(`Status : Success !`)}`));
+      await sleep(6500);
+
+    } else if (result == 'BANNED') {
+      console.log(chalk.bgRed(`Mampus Banned Makanya jangan brutal`));
+      break;
     }
-    
+  }
 
 })();
