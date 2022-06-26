@@ -5,7 +5,7 @@ const rs = require('readline-sync');
 const chalkRainbow = require('chalk-rainbow')
 
 function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
+  return new Promise(resolve => setTimeout(resolve, ms));5000
 }
 
 const GoStumble = (auth) => new Promise((resolve, reject) => {
